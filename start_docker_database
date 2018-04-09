@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+
+# This script will recreate and start a Postgres database on your local Docker
+# instance, and configure your local_test_settings.py to use.
+
+if [ "$(docker ps -a | grep django_model_deprecater_tests )" ]; then
+    docker stop django_model_deprecater_tests
+    docker rm django_model_deprecater_tests
+fi
+
+docker run \
+    -d \
+    --name django_model_deprecater_tests \
+    -p 7432:5432 \
+    -v `pwd`/docker/postgres/:/docker-entrypoint-initdb.d/ \
+    postgres:9.6
+sleep 5
+
+
+docker_db_host="$(docker-machine ip 2> /dev/null)" || docker_db_host="127.0.0.1"
+cat << END_OF_LOCAL_SETTINGS > ./django_model_deprecater/local_database_settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'model_deprecater',
+        'USER': 'model_deprecater',
+        'PASSWORD': '',
+        'HOST': '$docker_db_host',
+        'PORT': '7432',
+        'ATOMIC_REQUESTS': True,
+        'CONN_MAX_AGE': 0  # Disable persistent connections
+    }
+}
+END_OF_LOCAL_SETTINGS
+docker logs django_model_deprecater_tests

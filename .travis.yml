@@ -1,0 +1,10 @@
+language: python
+sudo: required
+services:
+  - docker
+install:
+  - pip install python-coveralls
+  - pip install tox
+script: "tox"
+after_success:
+  - coveralls
