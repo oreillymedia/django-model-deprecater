@@ -8,7 +8,6 @@ import six
 from django.conf import settings
 from django.db import models
 
-
 log = logging.getLogger(__name__)
 
 

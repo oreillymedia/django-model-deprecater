@@ -1,0 +1,5 @@
+[run]
+omit =
+    */migrations/*
+    django_model_deprecater/tests/sampleapp/*
+    django_model_deprecater/local_database_settings.py

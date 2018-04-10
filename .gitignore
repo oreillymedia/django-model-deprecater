@@ -6,6 +6,7 @@
 .#*
 .cache
 .coverage*
+!.coveragerc
 .ctrlp
 .DS_Store
 .idea
@@ -13,6 +14,7 @@
 .project
 .pydevproject
 .ropeproject
+.vscode
 .settings
 .tags*
 .tox
