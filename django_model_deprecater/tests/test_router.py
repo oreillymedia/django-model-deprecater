@@ -1,6 +1,6 @@
-import mock
 import pytest
 
+import mock
 from django_model_deprecater.routers import (
     DeprecatedModelRouter, get_model_path, make_model_path,
     warn_or_raise_on_model,
