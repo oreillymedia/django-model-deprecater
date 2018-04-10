@@ -10,8 +10,8 @@ Django Model Deprecater README
     :alt: Build Status
 
 
-.. image:: https://coveralls.io/repos/github/oreillymedia/django-model-deprecater/badge.svg?branch=master
-    :target: https://coveralls.io/github/oreillymedia/django-model-deprecater?branch=master
+.. image:: https://codecov.io/gh/oreillymedia/django-model-deprecater/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/oreillymedia/django-model-deprecater
     :alt: Coverage Status
 
 Django Model Deprecater is a library that aims to make it easier to deprecate models
