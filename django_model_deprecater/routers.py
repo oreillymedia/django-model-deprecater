@@ -20,7 +20,7 @@ def make_model_path(model_or_instance):
     return '{}.{}'.format(model._meta.app_label, model._meta.object_name)
 
 
-def get_model_path(model, warning_models):
+def get_model_path(model):
     """Get a warning message for a given model representation
 
     A model representation may be one of the following:
@@ -36,7 +36,7 @@ def get_model_path(model, warning_models):
 
 
 def warn_or_raise_on_model(model, warning_models):
-    model_path = get_model_path(model, warning_models)
+    model_path = get_model_path(model)
     w_or_e = warning_models.get(model_path)
 
     # short-circuit here, no need for more overhead if it's not needed
@@ -45,7 +45,7 @@ def warn_or_raise_on_model(model, warning_models):
 
     # if w_or_e is a string, treat it as a warning
     elif isinstance(w_or_e, six.string_types):
-        warnings.warn(w_or_e)
+        warnings.warn(w_or_e, category=DeprecationWarning)
 
     # if w_or_e is a sub-class of Exception, create and raise it
     elif w_or_e and issubclass(w_or_e, Exception):
@@ -65,6 +65,7 @@ class DeprecatedModelRouter(object):
     check_relation = settings.DEPRECATED_MODEL_ROUTER['check_allow_relation']
 
     def db_for_read(self, model, **hints):
+        print("HERE")
         """Attempts to read auth models go to auth_db."""
         warn_or_raise_on_model(model, self.deprecated_models)
         return 'default'
@@ -79,7 +80,7 @@ class DeprecatedModelRouter(object):
         if self.check_relation:
             # these may raise exceptions, we're explicitly not catching them
             warn_or_raise_on_model(obj1, self.deprecated_models)
-            warn_or_raise_on_model(obj1, self.deprecated_models)
+            warn_or_raise_on_model(obj2, self.deprecated_models)
         return True
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):

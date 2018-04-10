@@ -37,3 +37,4 @@ test_storage
 ve
 */__pycache__
 *.pyc
+.pytest_cache
