@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import find_packages, setup
 
-version = '1.0.0'
+version = '0.1.0'
 
 setup(
     name="django-model-deprecater",
@@ -11,7 +11,7 @@ setup(
     description="A django library to assist in deprecating models.",
     long_description=open('README.rst').read(),
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
         'Framework :: Django :: 1.8',
         'Framework :: Django :: 1.9',

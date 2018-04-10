@@ -1,5 +1,3 @@
-from django_model_deprecater.exceptions import DeprecatedModelException
-
 from django_model_deprecater.local_database_settings import DATABASES  # noqa: F401,E501 isort:skip
 
 INSTALLED_APPS = [
@@ -14,10 +12,7 @@ DEPRECATED_MODEL_ROUTER = {
     'check_allow_migrate': False,
     # Whether to allow relations if a model in the auth app is involved
     'check_allow_relation': False,
-    'models': {
-        'django_model_deprecater.tests.sampleapp.V1Thing': DeprecatedModelException,  # noqa: F401,E501 isort:skip
-        'django_model_deprecater.tests.sampleapp.V2Thing': 'This model will soon be replaced by django_model_deprecater.V3Thing'  # noqa: F401,E501 isort:skip
-    },
+    'models': {},
 }
 
 SECRET_KEY = 'asecretkey'

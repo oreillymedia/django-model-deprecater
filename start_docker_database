@@ -4,14 +4,14 @@ set -e
 # This script will recreate and start a Postgres database on your local Docker
 # instance, and configure your local_test_settings.py to use.
 
-if [ "$(docker ps -a | grep django_model_deprecater_tests )" ]; then
-    docker stop django_model_deprecater_tests
-    docker rm django_model_deprecater_tests
+if [ "$(docker ps -a | grep django_model_deprecater_test_database )" ]; then
+    docker stop django_model_deprecater_test_database
+    docker rm django_model_deprecater_test_database
 fi
 
 docker run \
     -d \
-    --name django_model_deprecater_tests \
+    --name django_model_deprecater_test_database \
     -p 7432:5432 \
     -v `pwd`/docker/postgres/:/docker-entrypoint-initdb.d/ \
     postgres:9.6
@@ -33,4 +33,4 @@ DATABASES = {
     }
 }
 END_OF_LOCAL_SETTINGS
-docker logs django_model_deprecater_tests
+docker logs django_model_deprecater_test_database
