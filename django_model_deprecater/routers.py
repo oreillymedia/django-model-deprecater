@@ -8,6 +8,8 @@ import six
 from django.conf import settings
 from django.db import models
 
+from django_model_deprecater.exceptions import DeprecatedModelException
+
 log = logging.getLogger(__name__)
 
 
@@ -39,16 +41,19 @@ def warn_or_raise_on_model(model, warning_models):
     model_path = get_model_path(model)
     w_or_e = warning_models.get(model_path)
 
-    # short-circuit here, no need for more overhead if it's not needed
     if w_or_e is None:
         return
 
-    # if w_or_e is a string, treat it as a warning
     elif isinstance(w_or_e, six.string_types):
-        warnings.warn(w_or_e, category=DeprecationWarning)
+        if w_or_e == 'WARN':
+            msg = DeprecatedModelException.base_msg.format(model_path)
+            warnings.warn(msg, category=DeprecationWarning)
+        elif w_or_e == 'RAISE':
+            raise DeprecatedModelException(model_path)
+        else:
+            warnings.warn(w_or_e, category=DeprecationWarning)
 
-    # if w_or_e is a sub-class of Exception, create and raise it
-    elif w_or_e and issubclass(w_or_e, Exception):
+    elif issubclass(w_or_e, Exception):
         raise w_or_e(model_path)
 
 
@@ -65,7 +70,6 @@ class DeprecatedModelRouter(object):
     check_relation = settings.DEPRECATED_MODEL_ROUTER['check_allow_relation']
 
     def db_for_read(self, model, **hints):
-        print("HERE")
         """Attempts to read auth models go to auth_db."""
         warn_or_raise_on_model(model, self.deprecated_models)
         return 'default'
