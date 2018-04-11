@@ -17,6 +17,13 @@ Django Model Deprecater README
 Django Model Deprecater is a library that aims to make it easier to deprecate models
 by raising warnings or errors when a database interaction with the model table is detected.
 
+Currently this library is in alpha and has not been pushed to pypi because it has yet to be used
+in a production like environment. Once it has, the package will be pushed to pypi. For now to use
+this package please install like so:
+
+    .. code-block:: bash
+
+        $ pip install -e git+https://github.com/oreillymedia/django-model-deprecater#egg=django-model-deprecater
 
 Use Cases
 ---------
