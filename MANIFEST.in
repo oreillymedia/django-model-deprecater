@@ -1,0 +1,6 @@
+include README.rst
+include LICENSE
+recursive-include requirements *.txt
+prune django_model_deprecater/tests
+global-exclude __pycache__
+global-exclude *.py[co]
