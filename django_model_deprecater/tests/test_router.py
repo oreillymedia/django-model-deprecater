@@ -1,6 +1,7 @@
+import mock
 import pytest
 
-import mock
+from django_model_deprecater.exceptions import DeprecatedModelException
 from django_model_deprecater.routers import (
     DeprecatedModelRouter, get_model_path, make_model_path,
     warn_or_raise_on_model,
@@ -62,9 +63,21 @@ class TestWarnOrRaiseOnModel(object):
         with pytest.raises(ValueError):
             warn_or_raise_on_model(V1Thing, {'sampleapp.V1Thing': ValueError})
 
-    def test_does_nothing_if_not_stiring_or_exception(self, mock_warn):
+    def test_does_nothing_if_not_string_or_exception(self, mock_warn):
         warn_or_raise_on_model(V1Thing, {'sampleapp.V1Thing': V2Thing})
         assert mock_warn.called is False
+
+    def test_raises_if_string_is_RAISE(self):
+        with pytest.raises(DeprecatedModelException):
+            warn_or_raise_on_model(V1Thing, {'sampleapp.V1Thing': 'RAISE'})
+
+    def test_warns_if_string_is_WARN(self, mock_warn):
+        m_path = 'sampleapp.V1Thing'
+        expected_warning_msg = DeprecatedModelException.base_msg.format(m_path)
+        warn_or_raise_on_model(V1Thing, {m_path: 'WARN'})
+        mock_warn.assert_called_once_with(
+            expected_warning_msg,
+            category=DeprecationWarning)
 
 
 class TestDeprecatedModelRouter(object):

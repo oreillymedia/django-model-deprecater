@@ -49,11 +49,6 @@ To use this router in Django just add these settings:
 
 .. code-block:: python
 
-    INSTALLED_APPS = [
-        ...
-        'django_model_deprecater'
-    ]
-
     DATABASE_ROUTERS = ['django_model_deprecater.routers.DeprecatedModelRouter']
     DEPRECATED_MODEL_ROUTER = {
         # Whether to allow migrate if model deprecated
@@ -65,6 +60,10 @@ To use this router in Django just add these settings:
             'app.V1Thing': DeprecatedModelException,
             # This will throw a DeprecatedWarning with the given string
             'app.V2Thing': 'This model will soon be replaced by app.V3Thing'
+            # This will warn with the same message you would get from DeprecatedModelException
+            'app.V3Thing': 'WARN',
+            # This will raise a DeprecatedModelException as well
+            'app.V4Thing': 'RAISE', 
         },
     }
 
